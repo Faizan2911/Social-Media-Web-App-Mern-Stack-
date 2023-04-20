@@ -52,3 +52,7 @@
   border: 2px solid var(--purplePain);
 }
 
+
+::-webkit-scrollbar {
+  display: none; 
+}
