@@ -132,5 +132,3 @@ export const UnFollowUser = async (req, res) => {
         }
     }
 }
-
-
