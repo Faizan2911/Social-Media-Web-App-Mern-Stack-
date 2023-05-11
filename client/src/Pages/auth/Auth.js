@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Auth.css';
 import Logo from '../../Img/logo.png';
-import {useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logIn, signUp } from '../../actions/AuthAction.js';
 
 
@@ -9,6 +9,7 @@ const Auth = () => {
 
     const [isSignUp, setIsSignUp] = useState(true);
     const dispatch = useDispatch();
+    const loading = useSelector((state) => state.authReducer.loading);
 
     const [data, setData] = useState({ firstname: "", lastname: "", email: "", password: "", confirmpass: "" });
 
@@ -24,7 +25,7 @@ const Auth = () => {
 
         if (isSignUp) {
             data.password === data.confirmpass ? dispatch(signUp(data)) : setConfirmPass(false)
-        }else{
+        } else {
             dispatch(logIn(data))
         }
     }
@@ -46,7 +47,7 @@ const Auth = () => {
 
 
     return (
-        
+
         //    Left Side
         <div className='Auth'>
             <div className="a-left">
@@ -117,8 +118,8 @@ const Auth = () => {
                         </span>
                     </div>
 
-                    <button className='button infoButton' type='submit'>
-                        {isSignUp ? "Sign Up" : "Login"}
+                    <button className='button infoButton' type='submit' disabled={loading}>
+                        {loading ? "loading..." : isSignUp ? "Sign Up" : "Login"}
                     </button>
 
                 </form>
