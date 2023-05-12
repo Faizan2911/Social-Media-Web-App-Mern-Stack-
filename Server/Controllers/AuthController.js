@@ -4,15 +4,25 @@ import bcrypt from 'bcrypt';
 
 // register new users
 export const registerUser = async (req, res) => {
-    const { email, password, firstname, lastname } = req.body;
+  
+    const {email, password} = req.body;
 
     const salt = await bcrypt.genSalt(10);
     let pass = password.toString();
     const hashedPass = await bcrypt.hash(pass, parseInt(salt));
+    req.body.password = hashedPass;
 
-    const newUser = new UserModel({ email, password: hashedPass, firstname, lastname });
+    const newUser = new UserModel(req.body);
+    
 
     try {
+
+        const oldUser = await UserModel.findOne({email});
+
+        if(oldUser){
+            return res.status(400).json({message: "This User already exists!"})
+        }
+        
         await newUser.save();
         res.status(200).json(newUser);
     } catch (error) {
