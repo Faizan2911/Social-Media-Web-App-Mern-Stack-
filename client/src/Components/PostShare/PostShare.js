@@ -7,15 +7,19 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadImage } from '../../actions/UploadAction';
+import { uploadImage, uploadPost } from '../../actions/UploadAction';
 
 
 
 const PostShare = () => {
 
+    const loading = useSelector((state) => state.postReducer.uploading)
     const [image, setImage] = useState(null);
     const imageRef = useRef();
     const dispatch = useDispatch();
+    const desc = useRef();
+    const { user } = useSelector((state) => state.authReducer.authData);
+
 
     const onImageChange = (event) => {
         if (event.target.files && event.target.files[0]) {
@@ -24,15 +28,23 @@ const PostShare = () => {
         }
     }
 
-    const desc = useRef();
-    const { user } = useSelector((state) => state.authReducer.authData);
+
+
+    
+    const reset = () => {
+        setImage(null);
+        desc.current.value=""
+    }
+
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const newPost = {
             userId: user._id,
-            desc: desc.current.value
+            desc: desc.current.value,
         }
 
         if (image) {
@@ -48,8 +60,10 @@ const PostShare = () => {
             } catch (error) {
                 console.log(error)
             }
-
         }
+
+        dispatch(uploadPost(newPost))
+        reset()
     }
 
     return (
@@ -57,7 +71,7 @@ const PostShare = () => {
             <img src={ProfileImage} alt="" />
 
             <div>
-                <input ref={desc} required type="text" placeholder='Write a caption...' />
+                <input type="text" placeholder='Write a caption...' required ref={desc} />
 
                 <div className="postOptions">
 
@@ -81,8 +95,8 @@ const PostShare = () => {
                         Shedule
                     </div>
 
-                    <button className='button ps-button' onClick={handleSubmit}>
-                        Share
+                    <button className='button ps-button' onClick={handleSubmit} disabled={loading}>
+                        {loading ? "uploading..." : "Share"}
                     </button>
 
                     <div style={{ display: "none" }}>
