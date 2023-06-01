@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import cors  from 'cors';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import AuthRoute from './Routes/AuthRoute.js';
 import UserRoute from './Routes/UserRoute.js';
@@ -11,6 +11,11 @@ import UploadRoute from './Routes/UploadRoute.js';
 
 // Routes
 const app = express();
+
+
+// to serve images for public (public folder)
+app.use(express.static('public'));
+app.use('/images', express.static('images'));
 
 
 // MiddleWare
