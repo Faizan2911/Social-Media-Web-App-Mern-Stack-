@@ -15,6 +15,11 @@
     height: 1.5rem;
 }
 
+.navIcons > a > img {
+    width: 2rem;
+    height: 2rem;
+}
+
 .rg-button{
     height: 3rem;
     width: 80%;

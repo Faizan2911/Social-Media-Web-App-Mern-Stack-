@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import './PostShare.css';
-import ProfileImage from '../../Img/profileImg.jpg';
 import PhotoOutlinedIcon from '@mui/icons-material/PhotoOutlined';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
@@ -19,6 +18,7 @@ const PostShare = () => {
     const dispatch = useDispatch();
     const desc = useRef();
     const { user } = useSelector((state) => state.authReducer.authData);
+    const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER;
 
 
     const onImageChange = (event) => {
@@ -30,10 +30,10 @@ const PostShare = () => {
 
 
 
-    
+
     const reset = () => {
         setImage(null);
-        desc.current.value=""
+        desc.current.value = ""
     }
 
 
@@ -68,7 +68,7 @@ const PostShare = () => {
 
     return (
         <div className="PostShare">
-            <img src={ProfileImage} alt="" />
+            <img src={user.profilePicture ? serverPublic + user.profilePicture : serverPublic + "defaultProfile.png"} alt="" />
 
             <div>
                 <input type="text" placeholder='Write a caption...' required ref={desc} />

@@ -9,15 +9,15 @@ import RightSide from '../../Components/RightSide/RightSide';
 const Profile = () => {
   return (
     <div className='Profile'>
-       <ProfilePageLeft />
+      <ProfilePageLeft />
 
-       <div className="ProfilePage-Center">
-        <ProfileCard />
+      <div className="ProfilePage-Center">
+        <ProfileCard location="profilePage" />
         <PostSide />
-       </div>
-     
-       
-       <RightSide />
+      </div>
+
+
+      <RightSide />
 
     </div>
   )
