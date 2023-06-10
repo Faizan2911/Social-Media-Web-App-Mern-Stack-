@@ -1,5 +1,6 @@
 import UserModel from "../Models/userModel.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 // get a user
@@ -28,9 +29,9 @@ export const getUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     const id = req.params.id;
 
-    const { currentUserId, currentUserAdminStatus, password } = req.body;
+    const { _id, password } = req.body;
 
-    if (id === currentUserId || currentUserAdminStatus) {
+    if (id === _id) {
 
         if (password) {
             const salt = await bcrypt.genSalt(10);
@@ -40,7 +41,13 @@ export const updateUser = async (req, res) => {
 
         try {
             const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
-            res.status(200).json(user)
+
+            const token = jwt.sign(
+                { email: user.email, id: user._id },
+                process.env.JWT_KEY
+            );
+
+            res.status(200).json({ user, token })
         } catch (error) {
             res.status(500).json(error)
         }
@@ -48,6 +55,7 @@ export const updateUser = async (req, res) => {
         res.status(403).json("Access Denied! You can only update your own profile")
     }
 }
+
 
 
 // Delete a User
