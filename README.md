@@ -1,1 +1,1 @@
-### Frontend and Backend - Social Media Web App
+### Frontend and Backend (Full Stack) - Social Media Web App
